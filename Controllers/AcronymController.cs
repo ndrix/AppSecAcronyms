@@ -181,7 +181,7 @@
                 return JObject.FromObject(retval).ToString(); ;
             }
 
-            // get the IP
+            /// get the IP
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
 

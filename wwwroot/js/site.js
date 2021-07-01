@@ -123,8 +123,8 @@ $(function () {
             title = $("#title").val();
             desc = $("#desc").val();
 
-            if (tla.length !== 3) {
-                alert("A three letter acronym can only have 3 letters. :)");
+            if (tla.length < 3) {
+                alert("An acronym should have at least 3 letters, sorry.");
                 $("#acronym").focus();
                 return false;
             }

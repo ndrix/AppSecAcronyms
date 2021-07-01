@@ -111,14 +111,13 @@
                     string url = String.Format("https://{0}{1}{2}{3}", hostname, container, f.FileName, Utils.GetSasToken());
                     if (Uri.TryCreate(url, UriKind.Absolute, out Uri tmp))
                     {
-                        /// This is an SSRF call then
+                        /// This is a valid SSRF call, but let's change the token. :)
                         if (!tmp.Host.Equals(hostname))
                         {
-                            string fakeToken = "?sv=2021-07-01&this_is_a_fake_token_but_your_SSRF_was_successful&well=done!";
+                            string fakeToken = "?sv=2021-07-01&this_is_a_fake_token_but_your_SSRF_was_successful&msg=welldone!";
                             url = String.Format("https://{0}{1}{2}{3}", hostname, container, f.FileName, fakeToken);
                         }
                     }
-
 
                     using (var client = new System.Net.WebClient())
                     {
@@ -132,16 +131,18 @@
 
 
                     #region SQL write
-                    /// Stuff in the DB now 
+                    /// get the IP
+                    string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
                     using (SqlConnection conn = new SqlConnection(Utils.GetConnectionString()))
                     {
                         conn.Open();
                         try
                         {
-                            using (SqlCommand cmd = new SqlCommand("INSERT INTO images (filename, added_by) VALUES (@Filename, @User)", conn))
+                            using (SqlCommand cmd = new SqlCommand("INSERT INTO images (filename, added_by) VALUES (@Filename, @AddedBy)", conn))
                             {
                                 cmd.Parameters.AddWithValue("@Filename", f.FileName);
-                                cmd.Parameters.AddWithValue("@User", User.Identity.Name);
+                                cmd.Parameters.AddWithValue("@AddedBy", ip);
                                 int? i = cmd.ExecuteNonQuery();
                                 if (!i.HasValue || i.Value != 1)
                                 {
@@ -160,7 +161,6 @@
                         }
                     }
                     #endregion
-
                 }
                 catch (Exception ex)
                 {
@@ -169,8 +169,5 @@
             }
             return Ok(new { status = "success", add = f.FileName });
         }
-
-
-
     }
 }
