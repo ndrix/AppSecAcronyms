@@ -38,7 +38,7 @@ namespace AppSecAcronyms.Controllers
                     Secure = true,
                     HttpOnly = true
                 };
-                Response.Cookies.Append($"Safe{cookieName}", $"Can't read me in JS", options);
+                Response.Cookies.Append($"Safe{cookieName}", $"Can't read me in JS", options2);
 
             }
 
@@ -51,11 +51,6 @@ namespace AppSecAcronyms.Controllers
             return View();
         }
 
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

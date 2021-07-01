@@ -13,6 +13,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "VaultUri": "https://mnsft-sec-webinar.vault.azure.net/",
+        "StorageHost": "webinarmsftsec.blob.core.windows.net",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "AZURE_TENANT_ID": "e6603525-c7a5-44a5-a2fb-3f256fcf2728"
       }

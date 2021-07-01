@@ -12,6 +12,7 @@
 
     public class PhotoController : Controller
     {
+        string storageHost = Environment.GetEnvironmentVariable("StorageHost");
 
         [HttpGet]
         [Route("images")]
@@ -106,7 +107,7 @@
                     }
 
                     /// Protecting the environment
-                    string hostname = "webinarmsftsec.blob.core.windows.net";
+                    string hostname = storageHost;
 
                     string url = String.Format("https://{0}{1}{2}{3}", hostname, container, f.FileName, Utils.GetSasToken());
                     if (Uri.TryCreate(url, UriKind.Absolute, out Uri tmp))
