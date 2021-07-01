@@ -24,10 +24,9 @@ $(function () {
             location.hash = userInput;
         }
 
-
         // security fix, good luck hackers!
         var evilChars = /<.*>/;
-        userInput = userInput.replace(evilChars, '');
+        userInput = decodeURIComponent(userInput.replace(evilChars, ''));
 
         if (userInput.length === "") {
             $("#results").html("");

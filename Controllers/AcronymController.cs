@@ -160,10 +160,10 @@
 
             Dictionary<string, string> retval = new Dictionary<string, string>();
             // Do some checking
-            if (tla.Length != 3)
+            if (tla.Length < 3)
             {
                 retval.Add("status", "error");
-                retval.Add("msg", "TLA should be 3 characters");
+                retval.Add("msg", "The acronym should be at least 3 characters");
                 return JObject.FromObject(retval).ToString();
             }
 

@@ -108,7 +108,6 @@
                     /// Protecting the environment
                     string hostname = "webinarmsftsec.blob.core.windows.net";
 
-
                     string url = String.Format("https://{0}{1}{2}{3}", hostname, container, f.FileName, Utils.GetSasToken());
                     if (Uri.TryCreate(url, UriKind.Absolute, out Uri tmp))
                     {
@@ -121,11 +120,10 @@
                     }
 
 
-
                     using (var client = new System.Net.WebClient())
                     {
                         client.Headers.Add("x-ms-date", DateTime.UtcNow.ToString("R", System.Globalization.CultureInfo.InvariantCulture));
-                        client.Headers.Add("x-ms-version", "2015-02-21");
+                        client.Headers.Add("x-ms-version", "2020-02-10");
                         client.Headers.Add("x-ms-blob-type", "BlockBlob");
                         client.Headers.Add("Content-Type", f.ContentType);
                         client.UploadData(url, "PUT", imageData);
