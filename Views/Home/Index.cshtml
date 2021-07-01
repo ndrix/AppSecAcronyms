@@ -1,0 +1,100 @@
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" name="xsrf" id="xsrf" value="@GetAntiXsrfToken()" />
+
+<div class="jumbotron text-center">
+
+    <h1 class="display-4">AppSec Acronyms</h1>
+    <p class="lead">This website will give you an insight on AppSec's many acronyms</p>
+    <p>
+        Ex: 
+        <a href="#ssrf">SSRF</a>
+        <a href="#xss">XSS</a>
+        <a href="#csp">CSP</a>
+    </p>
+
+    <div class="row">
+        <div class="col-lg-2">
+        </div>
+
+        <div class="col-lg-8">
+            <div class="input-group">
+                <input type="text"
+                        id="search"
+                        class="form-control"
+                        placeholder="Search..."
+                        aria-label="Search..." />
+
+                <span class="input-group-btn">
+                    <button class="btn btn-success" type="button">Go!</button>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+        </div>
+
+    </div>
+
+    <br />
+
+    <div id="results">
+        <div id="loader">
+            <img src="~/images/loader.gif" />
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal for adding TLA's -->
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add a new TLA</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Add the following Acronym to the site.</p>
+
+                <div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label" for="arcronym"><strong>Acronym</strong></label>
+                        <div class="col-9">
+                            <input type="text" size="3" maxlength="3" id="acronym" placeholder="ABC" />
+                            <span class="text-muted">(3 chars max)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label" for="title"><strong>Title</strong></label>
+                        <div class="col-9">
+                            <input type="text" stytle="width:100%" id="title" placeholder="Title of your acronym" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label" for="desc"><strong>Description</strong></label>
+                        <div class="col-9">
+                            <textarea id="desc" placeholder="One sentence description" style="width:100%"></textarea>
+                        </div>
+                    </div>
+
+                    <p class ="alert" id="modalmsg"></p>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="addacronym" type="button" class="btn btn-primary">Add acronym</button>
+            </div>
+        </div>
+    </div>
+</div>
