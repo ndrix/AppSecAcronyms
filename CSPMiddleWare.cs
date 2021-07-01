@@ -31,7 +31,7 @@
                     "Content-Security-Policy",
                     "script-src 'self' https://az416426.vo.msecnd.net;" +
                     // "style-src 'self'; " +
-                    "img-src 'self' https://striketla.blob.core.windows.net;"
+                    "img-src 'self' webinarmsftsec.blob.core.windows.net;"
                 );
 
             }

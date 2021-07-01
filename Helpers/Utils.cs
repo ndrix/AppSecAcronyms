@@ -9,8 +9,7 @@ namespace AppSecAcronyms.Helpers
     using Azure.Identity;
     using Azure.Security.KeyVault;
     using Azure.Security.KeyVault.Secrets;
-
-
+    
     public class Utils
     {
         static string _connString = "";

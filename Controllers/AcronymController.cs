@@ -8,6 +8,7 @@
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
+    using ProfanityFilter;
 
     public class AcronymController : Controller
     {
@@ -232,6 +233,8 @@
         #region Helper functions
         private string Sanitize(string input)
         {
+            var filter = new ProfanityFilter();
+            input = filter.CensorString(input);
             input = System.Web.HttpUtility.HtmlEncode(input);
             return input.Trim();
         }
