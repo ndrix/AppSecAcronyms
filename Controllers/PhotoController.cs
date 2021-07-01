@@ -27,7 +27,7 @@
                 conn.Open();
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("SELECT TOP (20) filename, added_by FROM images ORDER BY id DESC", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT TOP (20) filename, added_by FROM images WHERE IsApproved = 1 ORDER BY id DESC", conn))
                     {
                         using (SqlDataReader rdr = cmd.ExecuteReader())
                         {
@@ -39,7 +39,7 @@
                                 {
                                     /// Only allow "poisoned" images given by self or a 
                                     /// user defined in the admins array.                                    
-                                    if (admins.Contains(addedBy))
+                                    if (addedBy == "admin")
                                     {
                                         images.Add(string.Format("https://webinarmsftsec.blob.core.windows.net/photos/{0}", filename));
                                         counterAdd++;
@@ -133,14 +133,22 @@
 
                     #region SQL write
                     /// get the IP
-                    string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                    string ip = isAdmin() ? "admin" : Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
                     using (SqlConnection conn = new SqlConnection(Utils.GetConnectionString()))
                     {
                         conn.Open();
                         try
                         {
-                            using (SqlCommand cmd = new SqlCommand("INSERT INTO images (filename, added_by) VALUES (@Filename, @AddedBy)", conn))
+                            // Set all previous instances of this image to non approved
+                            using (SqlCommand cmd = new SqlCommand("DELETE FROM images WHERE filename LIKE @Filename", conn))
+                            {
+                                cmd.Parameters.AddWithValue("@Filename", f.FileName);
+                                int? i = cmd.ExecuteNonQuery();
+                            }
+
+
+                            using (SqlCommand cmd = new SqlCommand("INSERT INTO images (filename, added_by, IsApproved) VALUES (@Filename, @AddedBy, 0)", conn))
                             {
                                 cmd.Parameters.AddWithValue("@Filename", f.FileName);
                                 cmd.Parameters.AddWithValue("@AddedBy", ip);
@@ -170,5 +178,27 @@
             }
             return Ok(new { status = "success", add = f.FileName });
         }
+
+        private Boolean isAdmin()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Request.Cookies["admin"]))
+                {
+                    string givenValue = Request.Cookies["admin"];
+                    string secret = Utils.GetMagicCookie();
+                    if (!string.IsNullOrEmpty(secret))
+                    {
+                        return secret.Equals(givenValue);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false;
+        }
+
     }
 }

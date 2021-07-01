@@ -40,6 +40,8 @@ namespace AppSecAcronyms
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseCspMiddleWare();
+
             app.UseStaticFiles();
 
             app.UseRouting();

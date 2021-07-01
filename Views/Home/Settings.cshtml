@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" name="xsrf" id="xsrf" value="@GetAntiXsrfToken()" />
+
+<div class="jumbotron">
+    <h1 class="display-3">Lab Settings</h1>
+    <p class="lead">Change a few settings</p>
+
+    <div class="row">
+        <div class="col-3">
+            <strong>CSP</strong>
+        </div>
+
+        <div class="col-9 text-left">
+            <select id="csp">
+                @if (ViewBag.cspvalue == "True")
+                {
+                    <option selected value="true">CSP on</option>
+                    <option value="false">CSP off (insecure)</option>
+                }
+                else
+                { 
+                    <option value="true">CSP on</option>
+                    <option selected value="false">CSP off (insecure)</option>
+                }
+
+            </select>
+
+            <span id="csp_status">
+                <img src="~/images/loader.gif" />
+            </span>
+
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col-3">&nbsp;</div>
+        <div class="col-9 text-left">&nbsp;</div>
+    </div>
+
+
+</div>
