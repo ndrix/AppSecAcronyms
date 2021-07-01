@@ -35,21 +35,9 @@
                             {
                                 string filename = rdr["filename"].ToString();
                                 string addedBy = rdr["added_by"].ToString();
-                                if (filename.Contains("<") && filename.Contains(">"))
-                                {
-                                    /// Only allow "poisoned" images given by self or a 
-                                    /// user defined in the admins array.                                    
-                                    if (addedBy == "admin")
-                                    {
-                                        images.Add(string.Format("https://webinarmsftsec.blob.core.windows.net/photos/{0}", filename));
-                                        counterAdd++;
-                                    }
-                                }
-                                else
-                                {
-                                    images.Add(string.Format("https://webinarmsftsec.blob.core.windows.net/photos/{0}", filename));
-                                    counterAdd++;
-                                }
+
+                                images.Add(string.Format("https://webinarmsftsec.blob.core.windows.net/photos/{0}", filename));
+                                counterAdd++;
 
                                 /// Only show 10 images
                                 if (counterAdd > 10)
